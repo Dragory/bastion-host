@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bastion-host
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: bastion-host
+  template:
+    metadata:
+      labels:
+        app: bastion-host
+    spec:
+      containers:
+      - name: bastion-host
+        image: ghcr.io/dragory/bastion-host:latest
+        ports:
+        - containerPort: 22
+        volumeMounts:
+          - name: bastion-host-keys
+            mountPath: /home/ubuntu/.ssh/authorized_keys
+            subPath: keys
+            readOnly: true
+      volumes:
+        - name: bastion-host-keys
+          secret:
+            secretName: bastion-host-keys
+            items:
+              - key: keys
+                path: keys
