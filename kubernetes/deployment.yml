@@ -20,7 +20,7 @@ spec:
         - containerPort: 22
         volumeMounts:
           - name: bastion-host-keys
-            mountPath: /home/ubuntu/.ssh/authorized_keys
+            mountPath: /root/.ssh/authorized_keys
             subPath: keys
             readOnly: true
       volumes:
